@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    android:layout_height="match_parent"
+    tools:context=".StartActivity"
+    android:backgroundTint="#000000">
+
+
+
+
+    <ImageView
+        android:layout_width="425dp"
+        android:layout_height="275dp"
+        android:gravity="center_horizontal"
+        android:src="@drawable/hibernate_logo" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/login"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#fff"
+        android:text="LOGIN"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#fff"
+        android:layout_marginTop="10dp"
+        android:id="@+id/register"
+        android:text="REGISTER"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"/>
+
+</LinearLayout>

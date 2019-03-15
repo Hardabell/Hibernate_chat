@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "165712617418",
+    "firebase_url": "https://hibernatechat.firebaseio.com",
+    "project_id": "hibernatechat",
+    "storage_bucket": "hibernatechat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165712617418:android:775b50b02ce51f72",
+        "android_client_info": {
+          "package_name": "com.hibernate.Hibernated"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165712617418-hcijtjn6ihntsuj8jubq2ddledj5op8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxSHDEX6MPwpiw_141AaLNOiAOl7lbFqE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
