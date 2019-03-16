@@ -9,16 +9,12 @@
     android:layout_height="match_parent"
     tools:context=".StartActivity"
     android:backgroundTint="#000000">
-
-
-
-
     <ImageView
+        android:id="@+id/logochat"
         android:layout_width="425dp"
         android:layout_height="275dp"
         android:gravity="center_horizontal"
         android:src="@drawable/hibernate_logo" />
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
