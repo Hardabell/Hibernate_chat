@@ -13,8 +13,9 @@
         android:layout_width="425dp"
         android:layout_height="275dp"
         android:gravity="center_horizontal"
-        android:src="@mipmap/logo_launcher_hibernate"
+        android:src="@mipmap/logo_launcher_hibernate_new"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
