@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hibernate.Hibernated.Fragments.ChatsFragment;
 import com.hibernate.Hibernated.Fragments.ProfileFragment;
+import com.hibernate.Hibernated.Fragments.StatusFragment;
 import com.hibernate.Hibernated.Fragments.UsersFragment;
 import com.hibernate.Hibernated.Model.Chat;
 import com.hibernate.Hibernated.Model.User;
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 viewPagerAdapter.addFragment(new UsersFragment(), "Users");
+                viewPagerAdapter.addFragment(new StatusFragment(), "Status");
                 viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
 
                 viewPager.setAdapter(viewPagerAdapter);

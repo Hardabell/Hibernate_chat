@@ -13,8 +13,7 @@
         android:roundIcon="@mipmap/logo_launcher_hibernate"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StartActivity">
-        </activity>
+        <activity android:name=".StartActivity"></activity>
         <activity
             android:name=".RegisterActivity"
             android:parentActivityName=".StartActivity" />
@@ -26,6 +25,7 @@
         <activity
             android:name=".ResetPasswordActivity"
             android:parentActivityName=".LoginActivity" />
+
         <service
             android:name=".Notifications.MyFirebaseIdService"
             android:enabled="true"
@@ -42,6 +42,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,6 +50,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".StatusActivity"></activity>
     </application>
 
 </manifest>
