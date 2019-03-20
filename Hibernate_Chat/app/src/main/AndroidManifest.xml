@@ -13,11 +13,10 @@
         android:roundIcon="@mipmap/logo_launcher_hibernate"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StartActivity"></activity>
+        <activity android:name=".StartActivity" />
         <activity
             android:name=".RegisterActivity"
             android:parentActivityName=".StartActivity" />
-        <activity android:name=".MainActivity" />
         <activity
             android:name=".LoginActivity"
             android:parentActivityName=".StartActivity" />
@@ -50,7 +49,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StatusActivity"></activity>
+        <activity android:name=".StatusActivity" />
+        <activity
+            android:name=".Main1Activity" android:label="@string/title_activity_main1" android:configChanges="orientation|screenSize|keyboardHidden"></activity>
     </application>
 
 </manifest>
