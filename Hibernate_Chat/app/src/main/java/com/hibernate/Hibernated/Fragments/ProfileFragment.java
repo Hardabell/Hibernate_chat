@@ -73,14 +73,14 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 username.setText(user.getUsername());
-                Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
+//                Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
 //                User user = dataSnapshot.getValue(User.class);
 //                username.setText(user.getUsername());
-//                if (user.getImageURL().equals("default")){
-//                    image_profile.setImageResource(R.mipmap.ic_launcher);
-//                } else {
-//                    Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
-//                }
+                if (user.getImageURL().equals("default")){
+                    image_profile.setImageResource(R.mipmap.ic_launcher);
+                } else {
+                    Glide.with(getContext()).load(user.getImageURL()).into(image_profile);
+                }
             }
 
             @Override
@@ -170,7 +170,7 @@ public class ProfileFragment extends Fragment {
             imageUri = data.getData();
 
             if (uploadTask != null && uploadTask.isInProgress()){
-                Toast.makeText(getContext(), "Upload in preogress", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Upload in progress", Toast.LENGTH_SHORT).show();
             } else {
                 uploadImage();
             }

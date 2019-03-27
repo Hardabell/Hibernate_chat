@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hibernate.Hibernated">
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false"/>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/logo_launcher_hibernate"
+        android:icon="@mipmap/hibernate_logo_new"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/logo_launcher_hibernate"
+        android:roundIcon="@mipmap/hibernate_logo_new"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".StartActivity" />
@@ -24,7 +32,6 @@
         <activity
             android:name=".ResetPasswordActivity"
             android:parentActivityName=".LoginActivity" />
-
         <service
             android:name=".Notifications.MyFirebaseIdService"
             android:enabled="true"
@@ -51,7 +58,10 @@
         </activity>
         <activity android:name=".StatusActivity" />
         <activity
-            android:name=".Main1Activity" android:label="@string/title_activity_main1" android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+            android:name=".Main1Activity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/title_activity_main1" />
+        <activity android:name=".CameraActivity"></activity>
     </application>
 
 </manifest>

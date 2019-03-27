@@ -5,31 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StatusActivity">
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/statusimage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:src="@mipmap/ic_launcher"/>
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:layout_width="300dp"
+    <ImageView
+        android:id="@+id/img_statusv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/txtStatusv"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
+        android:text="My Status"
         android:gravity="center"
-        android:layout_marginLeft="42dp"
-        android:id="@+id/textMyStatus"
-        android:layout_marginTop="10dp"
-        app:met_floatingLabel="normal"
-        android:hint="Type status.."
-        android:layout_below="@+id/statusimage"/>
-    <Button
-        android:id="@+id/btnStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Save"
-        android:background="@color/colorPrimary"
-        android:layout_marginLeft="148dp"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/textMyStatus"/>
+        android:textSize="22dp"
+        android:background="#dedede"
+        />
 </RelativeLayout>

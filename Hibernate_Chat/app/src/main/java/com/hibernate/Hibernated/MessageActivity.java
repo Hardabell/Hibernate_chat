@@ -1,16 +1,23 @@
 package com.hibernate.Hibernated;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +39,13 @@ import com.hibernate.Hibernated.Notifications.Data;
 import com.hibernate.Hibernated.Notifications.MyResponse;
 import com.hibernate.Hibernated.Notifications.Sender;
 import com.hibernate.Hibernated.Notifications.Token;
+import com.sinch.android.rtc.PushPair;
+import com.sinch.android.rtc.Sinch;
+import com.sinch.android.rtc.SinchClient;
+import com.sinch.android.rtc.SinchError;
+import com.sinch.android.rtc.calling.CallClient;
+import com.sinch.android.rtc.calling.CallClientListener;
+import com.sinch.android.rtc.calling.CallListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +57,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MessageActivity extends AppCompatActivity {
+
+    private static final String APP_KEY = "18a3e0bf-dc7d-4c4a-8ba0-ca6d20f5c3fe";
+    private static final String APP_SECRET = "5HOmxbJHdkWP94V42yWx+Q==";
+    private static final String ENVIRONMENT = "sandbox.sinch.com";
+
+    private com.sinch.android.rtc.calling.Call call;
+    private TextView callState;
+    private SinchClient sinchClient;
+    ImageView button;
 
     CircleImageView profile_image;
     TextView username;
@@ -73,6 +96,48 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+
+        if (ContextCompat.checkSelfPermission(MessageActivity.this, android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(MessageActivity.this, android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MessageActivity.this,
+                    new String[]{android.Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_PHONE_STATE},
+                    1);
+        }
+//
+//        userid = intent.getStringExtra("userid");
+//
+//        sinchClient = Sinch.getSinchClientBuilder()
+//                .context(this)
+//                .userId(userid)
+//                .applicationKey(APP_KEY)
+//                .applicationSecret(APP_SECRET)
+//                .environmentHost(ENVIRONMENT)
+//                .build();
+//
+//        sinchClient.setSupportCalling(true);
+//        sinchClient.startListeningOnActiveConnection();
+//        sinchClient.start();
+//
+//        sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
+//
+//        button = (Button) findViewById(R.id.button);
+//        callState = (TextView) findViewById(R.id.callState);
+//
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (call == null) {
+//                    call = sinchClient.getCallClient().callUser(fuser.getUid());
+//                    call.addCallListener(new SinchCallListener());
+//                    button.setText("Hang Up");
+//                } else {
+//                    call.hangup();
+//                }
+//            }
+//        });
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -97,6 +162,7 @@ public class MessageActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         btn_send = findViewById(R.id.btn_send);
         text_send = findViewById(R.id.text_send);
+//        button = findViewById(R.id.button);
 
         intent = getIntent();
         userid = intent.getStringExtra("userid");
@@ -107,7 +173,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 notify = true;
                 String msg = text_send.getText().toString();
-                if (!msg.equals("")){
+                if (!msg.equals("")) {
                     sendMessage(fuser.getUid(), userid, msg);
                 } else {
                     Toast.makeText(MessageActivity.this, "You can't send empty message", Toast.LENGTH_SHORT).show();
@@ -124,7 +190,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 username.setText(user.getUsername());
-                if (user.getImageURL().equals("default")){
+                if (user.getImageURL().equals("default")) {
                     profile_image.setImageResource(R.mipmap.ic_launcher);
                 } else {
 
@@ -141,16 +207,93 @@ public class MessageActivity extends AppCompatActivity {
         });
 
         seenMessage(userid);
+
+        //        if (ContextCompat.checkSelfPermission(MessageActivity.this, android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(MessageActivity.this, android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(MessageActivity.this,
+//                    new String[]{android.Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_PHONE_STATE},
+//                    1);
+//        }
+//
+        userid = intent.getStringExtra("userid");
+
+        sinchClient = Sinch.getSinchClientBuilder()
+                .context(this)
+                .userId(userid)
+                .applicationKey(APP_KEY)
+                .applicationSecret(APP_SECRET)
+                .environmentHost(ENVIRONMENT)
+                .build();
+
+        sinchClient.setSupportCalling(true);
+        sinchClient.startListeningOnActiveConnection();
+        sinchClient.start();
+
+        sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
+
+        button = (ImageView) findViewById(R.id.button);
+        callState = (TextView) findViewById(R.id.callState);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (call == null) {
+                    call = sinchClient.getCallClient().callUser(fuser.getUid());
+                    call.addCallListener(new SinchCallListener());
+//                    button.setText("Hang Up");
+                } else {
+                    call.hangup();
+                }
+            }
+        });
     }
 
-    private void seenMessage(final String userid){
+    private class SinchCallListener implements CallListener {
+        @Override
+        public void onCallProgressing(com.sinch.android.rtc.calling.Call progressingCall) {
+            callState.setText("ringing");
+        }
+
+        @Override
+        public void onCallEstablished(com.sinch.android.rtc.calling.Call establishedCall) {
+            callState.setText("connected");
+            setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
+        }
+
+        @Override
+        public void onCallEnded(com.sinch.android.rtc.calling.Call endedCall) {
+            call = null;
+            SinchError a = endedCall.getDetails().getError();
+//            button.setText("Call");
+            callState.setText("");
+            setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
+        }
+
+        @Override
+        public void onShouldSendPushNotification(com.sinch.android.rtc.calling.Call call, List<PushPair> list) {
+
+        }
+
+    }
+    private class SinchCallClientListener implements CallClientListener {
+        @Override
+        public void onIncomingCall(CallClient callClient, com.sinch.android.rtc.calling.Call incomingCall) {
+            call = incomingCall;
+            Toast.makeText(MessageActivity.this, "incoming call", Toast.LENGTH_SHORT).show();
+            call.answer();
+            call.addCallListener(new SinchCallListener());
+//            button.setText("Hang Up");
+        }
+    }
+
+
+    private void seenMessage(final String userid) {
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         seenListener = reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chat chat = snapshot.getValue(Chat.class);
-                    if (chat.getReceiver().equals(fuser.getUid()) && chat.getSender().equals(userid)){
+                    if (chat.getReceiver().equals(fuser.getUid()) && chat.getSender().equals(userid)) {
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("isseen", true);
                         snapshot.getRef().updateChildren(hashMap);
@@ -165,7 +308,8 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void sendMessage(String sender, final String receiver, String message){
+
+    private void sendMessage(String sender, final String receiver, String message) {
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
@@ -186,7 +330,7 @@ public class MessageActivity extends AppCompatActivity {
         chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()){
+                if (!dataSnapshot.exists()) {
                     chatRef.child("id").setValue(userid);
                 }
             }
@@ -196,7 +340,7 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
-        
+
         final DatabaseReference chatRefReceiver = FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child(userid)
                 .child(fuser.getUid());
@@ -222,15 +366,15 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void sendNotifiaction(String receiver, final String username, final String message){
+    private void sendNotifiaction(String receiver, final String username, final String message) {
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = tokens.orderByKey().equalTo(receiver);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(fuser.getUid(), R.mipmap.ic_launcher, username+": "+message, "New Message",
+                    Data data = new Data(fuser.getUid(), R.mipmap.ic_launcher, username + ": " + message, "New Message",
                             userid);
 
                     Sender sender = new Sender(data, token.getToken());
@@ -239,8 +383,8 @@ public class MessageActivity extends AppCompatActivity {
                             .enqueue(new Callback<MyResponse>() {
                                 @Override
                                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                    if (response.code() == 200){
-                                        if (response.body().success != 1){
+                                    if (response.code() == 200) {
+                                        if (response.body().success != 1) {
                                             Toast.makeText(MessageActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -261,7 +405,7 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void readMesagges(final String myid, final String userid, final String imageurl){
+    private void readMesagges(final String myid, final String userid, final String imageurl) {
         mchat = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -269,10 +413,10 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mchat.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chat chat = snapshot.getValue(Chat.class);
                     if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid) ||
-                            chat.getReceiver().equals(userid) && chat.getSender().equals(myid)){
+                            chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
                         mchat.add(chat);
                     }
 
@@ -288,13 +432,13 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void currentUser(String userid){
+    private void currentUser(String userid) {
         SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
         editor.putString("currentuser", userid);
         editor.apply();
     }
 
-    private void status(String status){
+    private void status(String status) {
         reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
 
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -317,4 +461,5 @@ public class MessageActivity extends AppCompatActivity {
         status("offline");
         currentUser("none");
     }
+
 }

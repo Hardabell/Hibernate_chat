@@ -8,15 +8,17 @@ public class User {
     private String status;
     private String txtStatus;
     private String imgStatus;
+    private String timeStatus;
     private String search;
 
-    public User(String id, String username, String imageURL, String status,String txtStatus, String imgStatus, String search) {
+    public User(String id, String username, String imageURL, String status,String txtStatus, String imgStatus, String timeStatus, String search) {
         this.id = id;
         this.username = username;
         this.imageURL = imageURL;
         this.status = status;
         this.txtStatus = txtStatus;
         this.imgStatus = imgStatus;
+        this.timeStatus = timeStatus;
         this.search = search;
     }
 
@@ -70,6 +72,14 @@ public class User {
 
     public void setImgStatus(String imgStatus) {
         this.imgStatus = imgStatus;
+    }
+
+    public String getTimeStatus() {
+        return timeStatus;
+    }
+
+    public void setTimeStatus(String timeStatus) {
+        this.timeStatus = timeStatus;
     }
 
     public String getSearch() {

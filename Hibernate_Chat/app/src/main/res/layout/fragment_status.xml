@@ -49,10 +49,16 @@
         android:textStyle="bold"
         android:text="Recent Status"
         android:layout_marginTop="63dp"/>
-    <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/teks"
-        android:id="@+id/statuslain"
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="7dp"/>
+        android:layout_height="415dp"
+        android:layout_below="@id/teks">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/statuslain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"/>
+    </ScrollView>
+
 </RelativeLayout>
